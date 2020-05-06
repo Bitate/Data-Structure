@@ -3,14 +3,17 @@
 	2. Each child node is either a left child or a right child
 	3. A left child precedes a right child in the ordering of children of a parent node
 	
-   A proper/full binary tree:
-	1. Each node has either 0 or 2 children.
+   A proper/full binary tree: Each node has either 0 or 2 children.
 	
+   External/Leave node: the node doesn't have children
+
+   Check Diagram Here: https://app.diagrams.net/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&page-id=YcINIXsXgCQ3Grmj7Nq5&title=network.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1OAnaecU1AIIQYbnNDw52GiGPs6m5Z_tC%26export%3Ddownload
 */
 
 
 #include <iostream>
 #include <list>
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 /////////                       C++ Binary Tree Interface                         ///////// 
@@ -69,53 +72,53 @@ public:
 	class Position	// position in the tree
 	{
 	private:
-		Node* v;	// pointer to the root node
+		Node* v;	// pointer to this node
 	public:
 		Position(Node* _v = NULL) :v(_v) {}	// constructor
-		ELem& operator*()
+		ELem& operator*()					// get element of a node
 		{
 			return v->elmt;
 		}
-		Position left() const
+		Position left() const				// get left child
 		{
 			return Position(v->left);
 		}
-		Position right() const
+		Position right() const				// get right child
 		{
 			return Position(v->right);
 		}
-		Position parnt() const
+		Position parnt() const				// get parent child
 		{
 			return Position(v->par);
 		}
-		bool isRoot() const
+		bool isRoot() const					// root of the tree?
 		{
 			return v->par == NULL;
 		}
-		bool isExternal() const
+		bool isExternal() const				// leave(the node doesn't have children) of the tree?
 		{
 			return v->left == NULL && v->right == NULL;
 		}
-		friend class LinkedBinaryTree;
+		friend class LinkedBinaryTree;		// give binary tree access to nodes' position
 	};
 	typedef std::list<Position> PositionList;	// list of positions
 public:
-	LinkedBinaryTree();
-	int size() const;
-	bool empty() const;
-	Position root() const;
-	PositionList positions() const;
-	void addRoot();
-	void expandExternal(const Position& p);
-	Position removeAboveExternal(const Position& p);
+	LinkedBinaryTree();									// constructor
+	int size() const;									// number of nodes
+	bool empty() const;									// is tree empty?
+	Position root() const;								// get the root
+	PositionList positions() const;						// list of nodes
+	void addRoot();										// add root to an empty tree
+	void expandExternal(const Position& p);				// expand external/leave node
+	Position removeAboveExternal(const Position& p);	// remove p and parent
 	// housekeeping functions omitted
-protected:
-	void preorder(Node* v, Position& pl) const;
+protected:												// local utility
+	void preorder(Node* v, Position& pl) const;			// preorder traversal
 private:
-	Node* _root;	// pointer to the root
-	int n;	// number of nodes in the tree
-
+	Node* _root;										// pointer to the root
+	int n;												// number of nodes in the tree
 };
+
 
 
 LinkedBinaryTree::LinkedBinaryTree()	// constructor
@@ -138,5 +141,61 @@ void LinkedBinaryTree::addRoot()	// add root to empty tree
 	n = 1;
 }
 
+// Expand external node(the node without children)
+// Transform an external node in the position p into an internal node 
+// by creating 2 new external nodes and making them the left and right chidren of p, respectively;
+void LinkedBinaryTree::expandExternal(const Position& p)
+{
+	Node* v = p.v;					// p's node 
+	v->left = new Node;				// add a new left child
+	v->left->par = v;				// v is its parent
+	v->right = new Node;			// add a new right child
+	v->right->par = v;				// v is its parent
+	n += 2;							// count 2 more nodes
+}
+
+// remove p and parent
+// Remove the external node in the position p together with its parent q,
+// replacing q with the sibling of p.
+LinkedBinaryTree::Position
+LinkedBinaryTree::removeAboveExternal(const Position& p)
+{
+	Node* w = p.v; Node* v = w->par;					// get p's node and parent
+	Node* sib = (w == v->left ? v->right : v->left) ;	// sib is a sibling of w
+	if (v == _root)										// child of root?
+	{
+		_root = sib;									// make sibling root
+		sib->par = NULL;
+	}
+	else
+	{
+		Node* gpar = v->par;		// w's grandparent
+		if (v == gpar->left) gpar->left = sib;		// replace parent by sib
+		else gpar->right = sib;
+		sib->par = gpar;
+	}
+	delete w; delete v;		// delete removed nodes
+	n -= 2;					// count 2 fewer nodes
+	return Position(sib);
+}
 
 
+// list of all nodes 
+LinkedBinaryTree::PositionList LinkedBinaryTree::positions() const
+{
+	PositionList pl;
+	preorder(_root, pl);			// preorder traversal
+	return PositionList(pl);		// return resulting list
+}
+
+// preorder traversal 
+void LinkedBinaryTree::preorder(Node* v, Position& pl) const
+{
+	pl.push_back(Position(v));	// add this node
+	// traverse left subtree
+	if (v->left != NULL)
+		preorder(v->left, pl);
+	// traverse right subtree
+	if (v->right != NULL)
+		preorder(v->right, pl);
+}
