@@ -6,7 +6,7 @@
 //////////////      Code Fragment: AVLEntry        //////////////////////
 /////////////////////////////////////////////////////////////////////////
 template <typename E>
-class AVLEntry : public E {				// an AVL entry to store the height information
+class AVLEntry : public E {		// an AVL entry to store the height information; E stands for Entry class?
 private:
     int ht;						// node height
 protected:						// protected, so that a user can't access them, but AVLTree can
