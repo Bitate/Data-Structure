@@ -140,7 +140,7 @@ template <typename E>					// insert utility
 typename SearchTree<E>::TPos SearchTree<E>::inserter(const K& k, const V& x) {
     TPos v = finder(k, root());				// search from virtual root
     while (v.isInternal())				// key already exists?
-        v = finder(k, v.right());				// look further TODO: Why multiple keys, Dictianory???
+        v = finder(k, v.right());		// continue to search until reaching an external node(we allow duplicate keys)
     T.expandExternal(v);				// add new internal node
     v->setKey(k); v->setValue(x);			// set entry
     n++;						// one more entry
