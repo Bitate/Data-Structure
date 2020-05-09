@@ -6,6 +6,7 @@
 5. A iterator provides a way to reference entries of the map, and a special sentinel value to indicate a nonexistent entry.
 6. A map is a collection of key-value entries, with each value associated with a distinct key.
 7. Map applications: a compiler's symbol table, a registry of environment variables.
+8. No matter how big/small the number is, when it **mod** a number(suppose l), the result must range from 0 to l-1; This is Awesome!!!!. It just like sets a limit and more important is that the it converts any key to hash code with the range perfectly applied to the Bucket Array length/size.
 ## Skip List
 1. A data structure to efficiently realize the **ordered map**.
 2. It makes random choices in arranging the entries in such a way that search and update times are **O(logn) on average, where n is the number of entries.

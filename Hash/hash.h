@@ -138,7 +138,10 @@ public:						                        // public types
 
 template <typename K, typename V, typename H>		// find utility
 typename HashMap<K, V, H>::Iterator HashMap<K, V, H>::finder(const K& k) {
-    int i = hash(k) % B.size();				    // get hash index i
+    // this is the original code
+    // int i = hash(k) % B.size();				    // get hash index i
+    // I simply change it to this
+    int i = k % B.size();
     BItor bkt = B.begin() + i;				    // the ith bucket
     Iterator p(B, bkt, bkt->begin());			// start of ith bucket
     while (!endOfBkt(p) && (*p).key() != k)		// search for k
