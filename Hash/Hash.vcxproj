@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{B2AAC055-BB26-4F72-9510-AF57A360A27B}</ProjectGuid>
+    <ProjectGuid>{957D1BD2-FD4A-4494-93EB-68969E256FC0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>HashTableMapandSkipList</RootNamespace>
+    <RootNamespace>Hash</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -147,10 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Hash Table Map and Skip List.cpp" />
+    <ClCompile Include="Hash.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="map.h" />
+    <ClInclude Include="hash.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\HashMap\hash map.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -99,7 +99,7 @@ public:						// public functions
 protected:					                    	// protected types
     typedef std::list<Entry> Bucket;			    // a bucket of entries
     typedef std::vector<Bucket> BktArray;		    // a bucket array
-    
+
     // HashMap utilities
     Iterator finder(const K& k);			                // find utility; read only
     Iterator inserter(const Iterator& p, const Entry& e);   // insert utility; read only
@@ -158,7 +158,7 @@ typename HashMap<K, V, H>::Iterator HashMap<K, V, H>::find(const K& k) {
 
 
 // get entry
-template <typename K, typename V, typename H>		
+template <typename K, typename V, typename H>
 typename HashMap<K, V, H>::Entry&
 HashMap<K, V, H>::Iterator::operator*() const
 {
@@ -166,7 +166,7 @@ HashMap<K, V, H>::Iterator::operator*() const
 }
 
 // advance to next entry
-template <typename K, typename V, typename H>		
+template <typename K, typename V, typename H>
 typename HashMap<K, V, H>::Iterator& HashMap<K, V, H>::Iterator::operator++() {
     ++ent;						// next entry in bucket
     if (endOfBkt(*this)) {				// at end of bucket?
@@ -180,7 +180,7 @@ typename HashMap<K, V, H>::Iterator& HashMap<K, V, H>::Iterator::operator++() {
 }
 
 // are iterators equal?
-template <typename K, typename V, typename H>		
+template <typename K, typename V, typename H>
 bool HashMap<K, V, H>::Iterator::operator==(const Iterator& p) const {
     if (ba != p.ba || bkt != p.bkt) return false;	// ba or bkt differ?
     else if (bkt == ba->end()) return true;		// both at the end?
@@ -220,9 +220,9 @@ typename HashMap<K, V, H>::Iterator HashMap<K, V, H>::end()
 
 template <typename K, typename V, typename H>		// iterator to front
 typename HashMap<K, V, H>::Iterator HashMap<K, V, H>::begin() {
-    if (empty()) return end();				// emtpty - return end
-    BItor bkt = B.begin();				// else search for an entry
-    while (bkt->empty()) ++bkt;				// find nonempty bucket
+    if (empty()) return end();				    // emtpty - return end
+    BItor bkt = B.begin();				        // else search for an entry
+    while (bkt->empty()) ++bkt;				    // find nonempty bucket
     return Iterator(B, bkt, bkt->begin());		// return first of bucket
 }
 
