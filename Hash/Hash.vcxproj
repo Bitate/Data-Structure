@@ -151,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hash.h" />
+    <ClInclude Include="hashmap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\HashMap\hash map.md" />

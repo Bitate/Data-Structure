@@ -155,7 +155,7 @@ typename HashMap<K, V, H>::Iterator HashMap<K, V, H>::find(const K& k) {
     if (endOfBkt(p))					// didn't find it?
         return end();					// return end iterator
     else
-        return p;						// return its position
+        return p;						// return its position TODO: position is iterator???
 }
 
 

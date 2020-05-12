@@ -23,6 +23,9 @@
     <ClInclude Include="hash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="hashmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\HashMap\hash map.md" />
