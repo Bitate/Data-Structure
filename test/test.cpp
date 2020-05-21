@@ -42,4 +42,9 @@
 //}
 
 
+#include "../Quick Sort/Quick Sort.cpp"
+#include "../Merge Sort/Merge Sort.cpp"
+
+
+
 

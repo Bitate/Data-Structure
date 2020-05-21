@@ -1,6 +1,9 @@
 //
 // Merge Sort Based on STL list
 //
+
+#include <list>
+
 template <typename E, typename C>
 void mergeSort(list<E>& S, const C& less) {
     typedef typename list<E>::iterator Itor;		// sequence of elements
