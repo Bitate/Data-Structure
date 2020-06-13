@@ -9,6 +9,7 @@ void merge(int arr[], int startIndex, int middleIndex, int endIndex)
 
 	// Temporary array to store merged array
 	int* tempArr = new int[totalElements];
+	
 
 	// Index of left subarray
 	// arr[startIndex ... middleIndex]
@@ -100,7 +101,7 @@ void mergeSort(int arr[], int startIndex, int endIndex)
 
 		// Sort right subarray
 		// arr[middleIndex ... endIndex]
-		mergeSort(arr, middleIndex, endIndex);
+		mergeSort(arr, middleIndex+1, endIndex);
 
 		// Merge the left and the right subarray
 		merge(arr, startIndex, middleIndex, endIndex);
