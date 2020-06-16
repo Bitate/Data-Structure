@@ -2,173 +2,140 @@
 // Implement an ordered dictionary of n internal nodes
 
 
-/////////////////////////////////////////////////////////////////////////
-//////////////      Code Fragment: AVLEntry        //////////////////////
-/////////////////////////////////////////////////////////////////////////
 template <typename E>
-class AVLEntry : public E {		// an AVL entry to store the height information; E stands for Entry class?
+class AVLEntry : public E {		// an AVL entry to store the getHeight information; E stands for Entry class?
 private:
-    int ht;						// node height
+    int nodeHeight;						
 protected:						// protected, so that a user can't access them, but AVLTree can
-    typedef typename E::Key K;				// key type
-    typedef typename E::Value V;			// value type
-    int height() const { return ht; }			// get height
-    void setHeight(int h) { ht = h; }			// set height
-public:						// public functions
-    AVLEntry(const K& k = K(), const V& v = V())	// constructor
-        : E(k, v), ht(0) { }
+    using Key = typedef typename E::Key;
+    using Value = typedef typename E::Value;
+
+    int getHeight() const { return nodeHeight; }			// get getHeight
+    void setHeight(int h) { nodeHeight = h; }			    // set getHeight
+public:						
+    AVLEntry(const Key& k = Key(), const Value& v = Value())	// constructor
+        : E(k, v), nodeHeight(0) { }
     friend class AVLTree<E>;				// allow AVLTree access
 };
 
 
-/////////////////////////////////////////////////////////////////////////
-//////////////       Code Fragment: Class           /////////////////////
-/////////////////////////////////////////////////////////////////////////
 template <typename E>					// an AVL tree derived from the class SearchTree
 class AVLTree : public SearchTree< AVLEntry<E> > {
-public:						// public types
-    typedef AVLEntry<E> AVLEntry;			// an entry
-    typedef typename SearchTree<AVLEntry>::Iterator Iterator; // an iterator
-protected:						// local types
-    typedef typename AVLEntry::Key K;			// a key
-    typedef typename AVLEntry::Value V;			// a value
-    typedef SearchTree<AVLEntry> ST;			// a search tree
-    typedef typename ST::TPos TPos;			// a tree position
-public:						// public functions
-    AVLTree();						// constructor
-    Iterator insert(const K& k, const V& x);		// insert (k,x)
-    void erase(const K& k) throw(NonexistentElement);	// remove key k entry
-    void erase(const Iterator& p);			// remove entry at p
-protected:						// utility functions to maintain the AVL tree balance properties.
-    int height(const TPos& v) const;			// node height utility
-    void setHeight(TPos v);				// set height utility
-    bool isBalanced(const TPos& v) const;		// is v balanced?
-    TPos tallGrandchild(const TPos& v) const;		// get tallest grandchild
-    void rebalance(const TPos& v);			// rebalance utility
+public:						
+    using AVLEntry = AVLEntry<E>;
+    using Iterator = typename SearchTree<AVLEntry>::Iterator;
+protected:						
+    using Key = typename AVLEntry::Key;     
+    using Value = typename AVLEntry::Value;
+    using SearchTree = searchTree<AVLEntry>;    // a search tree
+    using TreePosition = typename ST::TreePosition;     // a tree position
+
+public:						
+    AVLTree();						
+    Iterator insert(const Key& k, const Value& x);		    // insert (k,x)
+    bool erase(const Key& k) throw(NonexistentElement);	    // remove key k entry
+    bool erase(const Iterator& p);			                // remove entry at p
+protected:						                // utility functions to maintain the AVL tree balance properties.
+    int getHeight(const TreePosition& v) const;			// node getHeight utility
+    void setHeight(TreePosition v);				        // set getHeight utility
+    bool isBalanced(const TreePosition& v) const;		// is v balanced?
+    TreePosition getTallerGrandchild(const TreePosition& v) const;	// get tallest grandchild
+    void rebalance(const TreePosition& v);			    // rebalance utility
 };
 
 
-/////////////////////////////////////////////////////////////////////////
-//////////////       Code Fragment: Balance         /////////////////////
-/////////////////////////////////////////////////////////////////////////
+
 template <typename E>					// constructor, create a tree having no nodes
 AVLTree<E>::AVLTree() : ST() { }
 
-template <typename E>					// node height utility
-int AVLTree<E>::height(const TPos& v) const
+template <typename E>					// node getHeight utility
+int AVLTree<E>::getHeight(const TreePosition& v) const
 {
-    return (v.isExternal() ? 0 : v->height());
+    return (v.isExternal() ? 0 : v->getHeight());
 }
 
 
-/////////////////////////////////////////////////////////////////////////
-//////////////       Code Fragment: TallGrandchild        ///////////////
-/////////////////////////////////////////////////////////////////////////
-template <typename E>					// set height utility
-void AVLTree<E>::setHeight(TPos v) {
-    int hl = height(v.left());
-    int hr = height(v.right());
-    v->setHeight(1 + std::max(hl, hr));			// max of left & right
+template <typename E>					
+void AVLTree<E>::setHeight(TreePosition v) 
+{
+    int leftChildHeight = getHeight(v.left());
+    int rightChildHeight = getHeight(v.right());
+    v->setHeight(1 + std::max(leftChildHeight, rightChildHeight));
 }
 
-template <typename E>					// is v balanced?
-bool AVLTree<E>::isBalanced(const TPos& v) const {
-    int bal = height(v.left()) - height(v.right());
-    return ((-1 <= bal) && (bal <= 1));
+template <typename E>
+bool AVLTree<E>::isBalanced(const TreePosition& v) const 
+{
+    int balanceFactor = getHeight(v.left()) - getHeight(v.right());
+    return ((-1 <= balanceFactor) && (balanceFactor <= 1));
 }
 
 template <typename E>					// get tallest grandchild
-typename AVLTree<E>::TPos AVLTree<E>::tallGrandchild(const TPos& z) const {
-    TPos zl = z.left();
-    TPos zr = z.right();
-    if (height(zl) >= height(zr))			// left child taller
-        if (height(zl.left()) >= height(zl.right()))
-            return zl.left();
+typename AVLTree<E>::TreePosition 
+AVLTree<E>::getTallerGrandchild(const TreePosition& nodePosition) const 
+{
+    TreePosition leftChildPosition = nodePosition.left();
+    TreePosition rightChildPosition = nodePosition.right();
+
+    // left child taller
+    if (getHeight(leftChildPosition) >= getHeight(rightChildPosition))
+    {
+        if (getHeight(leftChildPosition.left()) >= getHeight(leftChildPosition.right()))
+            return leftChildPosition.left();
         else
-            return zl.right();
-    else 						// right child taller
-        if (height(zr.right()) >= height(zr.left()))
-            return zr.right();
+            return leftChildPosition.right();
+    }    
+    // right child taller
+    else 
+    {
+        if (getHeight(rightChildPosition.right()) >= getHeight(rightChildPosition.left()))
+            return rightChildPosition.right();
         else
-            return zr.left();
+            return rightChildPosition.left();
+    }
 }
 
+template <typename E>
+void AVLTree<E>::rebalance(const TreePosition& v) {
+    TreePosition nodePosition = v;
 
-/////////////////////////////////////////////////////////////////////////
-//////////////       Code Fragment: Rebalance         ///////////////////
-/////////////////////////////////////////////////////////////////////////
-template <typename E>	// set height as 1 more than the maximum of the heights of its 2 children
-void AVLTree<E>::setHeight(TPos v) {
-    int hl = height(v.left());
-    int hr = height(v.right());
-    v->setHeight(1 + std::max(hl, hr));			// max of left & right
-}
+    // rebalance up to root
+    while (!(nodePosition == ST::root())) 
+    {			
+        parentNodePosition = nodePosition.parent();
+        setHeight(parentNodePosition);					    
+        if (!isBalanced(parentNodePosition))
+        {				
+            TreePosition x = getTallerGrandchild(parentNodePosition);
+            
+            nodePosition = restructure(x);				// trinode restructure
 
-template <typename E>  // is node v balanced? By checking whether the height difference between its children is at most 1
-bool AVLTree<E>::isBalanced(const TPos& v) const {
-    int bal = height(v.left()) - height(v.right());
-    return ((-1 <= bal) && (bal <= 1));
-}
-
-template <typename E>  // get tallest grandchild of a node to which the restructuring operation will be applied
-typename AVLTree<E>::TPos AVLTree<E>::tallGrandchild(const TPos& z) const {
-    TPos zl = z.left();
-    TPos zr = z.right();
-    if (height(zl) >= height(zr))			// left child taller
-        if (height(zl.left()) >= height(zl.right()))
-            return zl.left();
-        else
-            return zl.right();
-    else 						// right child taller
-        if (height(zr.right()) >= height(zr.left()))
-            return zr.right();
-        else
-            return zr.left();
-}
-
-
-/////////////////////////////////////////////////////////////////////////
-//////////////       Code Fragment: Rebalance         ///////////////////
-/////////////////////////////////////////////////////////////////////////
-template <typename E>	// core function to rebalance the AVL tree after an insertion or removal
-void AVLTree<E>::rebalance(const TPos& v) {
-    TPos z = v;
-    while (!(z == ST::root())) {			// rebalance up to root
-        z = z.parent();
-        setHeight(z);					    // compute new height
-        if (!isBalanced(z)) {				// restructuring needed
-            TPos x = tallGrandchild(z);
-            z = restructure(x);				// trinode restructure
-            setHeight(z.left());			// update heights
-            setHeight(z.right());
-            setHeight(z);
+            setHeight(nodePosition.left());			    // update heights
+            setHeight(nodePosition.right());
+            setHeight(nodePosition);
         }
     }
 }
 
 
-/////////////////////////////////////////////////////////////////////////
-//////////////       Code Fragment: Insert          /////////////////////
-/////////////////////////////////////////////////////////////////////////
 template <typename E>					// insert (k,x)
-typename AVLTree<E>::Iterator AVLTree<E>::insert(const K& k, const V& x) {
-    TPos v = inserter(k, x);				// insert in base tree
-    setHeight(v);					// compute its height
+typename AVLTree<E>::Iterator AVLTree<E>::insert(const Key& k, const Value& x) {
+    TreePosition v = inserter(k, x);				// insert in base tree
+    setHeight(v);					// compute its getHeight
     rebalance(v);					// rebalance if needed
     return Iterator(v);
 }
 
 
-/////////////////////////////////////////////////////////////////////////
-//////////////       Code Fragment: Erase           /////////////////////
-/////////////////////////////////////////////////////////////////////////
-template <typename E>					// remove key k entry
-void AVLTree<E>::erase(const K& k) throw(NonexistentElement) {
-    TPos v = finder(k, ST::root());			// find in base tree
-    if (Iterator(v) == ST::end())			// not found?
-        throw NonexistentElement("Erase of nonexistent");
-    TPos w = eraser(v);					// remove it
-    rebalance(w);					// rebalance if needed
+template <typename E>					
+bool AVLTree<E>::erase(const Key& k) 
+{
+    TreePosition v = finder(k, ST::root());			// find in base tree
+    if (Iterator(v) == ST::end())			        // not found?
+        return false;
+    TreePosition w = eraser(v);					    // remove it
+    rebalance(w);					                // rebalance if needed
+    return true;
 }
 
 
