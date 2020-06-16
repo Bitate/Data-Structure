@@ -18,6 +18,9 @@
     <ClCompile Include="AVLTree.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="AVLTree1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

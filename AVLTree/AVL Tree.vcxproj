@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AVLTree.h" />
+    <ClCompile Include="AVLTree1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
