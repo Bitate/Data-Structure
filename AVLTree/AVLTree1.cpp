@@ -4,11 +4,10 @@
 #include<iostream>
 #include <algorithm>
 
-#define pow2(n) (1 << (n))
 using namespace std;
 
 /*
-* Node Declaration
+* Single node structure
 */
 struct avl_node
 {
@@ -134,18 +133,22 @@ int avlTree::diff(avl_node* temp)
 {
 	int l_height = height(temp->left);
 	int r_height = height(temp->right);
+	// balance factor = leftChild - rightHeight
 	int b_factor = l_height - r_height;
 	return b_factor;
 }
 
 /*
 * Right- Right Rotation
+* parent is the first unbalanced node.
 */
 avl_node* avlTree::rr_rotation(avl_node* parent)
 {
 	avl_node* temp;
 	temp = parent->right;
+
 	parent->right = temp->left;
+
 	temp->left = parent;
 	return temp;
 }
@@ -156,6 +159,7 @@ avl_node* avlTree::ll_rotation(avl_node* parent)
 {
 	avl_node* temp;
 	temp = parent->left;
+
 	parent->left = temp->right;
 	temp->right = parent;
 	return temp;
