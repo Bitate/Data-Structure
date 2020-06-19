@@ -120,19 +120,20 @@ int avlTree::height(avl_node* temp)
 	{
 		int l_height = height(temp->left);
 		int r_height = height(temp->right);
-		int max_height = max(l_height, r_height);
-		h = max_height + 1;
+		int max_children_height = max(l_height, r_height);
+		h = max_children_height + 1;
 	}
 	return h;
 }
 
 /*
-* Height Difference
+* Children Height Difference
 */
 int avlTree::diff(avl_node* temp)
 {
 	int l_height = height(temp->left);
 	int r_height = height(temp->right);
+
 	// balance factor = leftChild - rightHeight
 	int b_factor = l_height - r_height;
 	return b_factor;
@@ -278,16 +279,32 @@ void avlTree::preorder(avl_node* tree)
 	preorder(tree->right);
 
 }
-avl_node* avlTree::findMin(avl_node* t) {
+
+/**
+ * Find the smallest value
+ */
+avl_node* avlTree::findMin(avl_node* t) 
+{
 	if (t == NULL) return NULL;
+
+    // go left all the way down
 	else if (t->left == NULL) return t; // if element traverse on max left then return
-	else return findMin(t->left); // or recursively traverse max left
+	else return findMin(t->left); 		// or recursively traverse max left
 }
-avl_node* avlTree::findMax(avl_node* t) {
+
+/**
+ * 
+ * 
+ */
+avl_node* avlTree::findMax(avl_node* t) 
+{
 	if (t == NULL) return NULL;
+
+	// go right all the way down
 	else if (t->right == NULL) return t;
 	else return findMax(t->right);
 }
+
 /*
 * Postorder Traversal of AVL Tree
 */
@@ -309,9 +326,19 @@ avl_node* avlTree::remove(avl_node* t, int x) {
 
 	// element found 
 	// element has 2 children
-	else if (t->left && t->right) {
+	else if (t->left && t->right) 
+	{
+		// Find the in-order successor of given node
+		// The in-order successor is the the smallest value 
+		// that is larger than x   
+		// How to find in-order successor?
+		// 1. go right exactly once, 
+		// 2. go left all the way down.
 		temp = findMin(t->right);
+
+		// replace the x with its in-order successor 
 		t->data = temp->data;
+
 		t->right = remove(t->right, t->data);
 	}
 	// if element has 1 or 0 child
