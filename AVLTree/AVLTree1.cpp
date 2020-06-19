@@ -245,7 +245,7 @@ void avlTree::display(avl_node* ptr, int level)
 	if (ptr != NULL)
 	{
 		display(ptr->right, level + 1);
-		printf("\n");
+		cout << "\n";
 		if (ptr == root)
 			cout << "Root -> ";
 		for (i = 0; i < level && ptr != root; i++)
