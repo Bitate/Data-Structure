@@ -341,3 +341,6 @@ healthchecksdb
 
 .gitattributes
 .gitignore
+
+.vscode/
+build/
