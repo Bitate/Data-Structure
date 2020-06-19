@@ -288,8 +288,9 @@ avl_node* avlTree::findMin(avl_node* t)
 	if (t == NULL) return NULL;
 
     // go left all the way down
-	else if (t->left == NULL) return t; // if element traverse on max left then return
-	else return findMin(t->left); 		// or recursively traverse max left
+	// find the smallest node that is bigger than current node
+	else if (t->left == NULL) return t; 
+	else return findMin(t->left); 		
 }
 
 /**
@@ -316,6 +317,7 @@ void avlTree::postorder(avl_node* tree)
 	postorder(tree->right);
 	cout << tree->data << "  ";
 }
+
 avl_node* avlTree::remove(avl_node* t, int x) {
 	avl_node* temp;
 	// element not found
