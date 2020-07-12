@@ -1,11 +1,3 @@
-/**
- *	1. A red-black tree is a binary search tree with nodes colored red and black
- *	2. Root is black;
- *	3. Every external node is black;
- *	4. The children of a red node are black;
- *	5. All the external nodes have the same black depth;
- */
-
 #include <iostream>
 
 using namespace std;
@@ -31,6 +23,7 @@ struct Node* root_node;
 void rotate_left(struct Node* x, struct Node* root_node);
 void rotate_right(struct Node* x, struct Node* root_node);
 void rebalance(struct Node* x, struct Node* root_node);
+void rebalance_for_erase(struct Node* x, struct Node* root_node);
 
 int main()
 {
@@ -86,7 +79,7 @@ void rotate_right(struct Node* x, struct Node* root_node)
 void rebalance(struct Node* x, struct Node* root_node)
 {
 	x->color = Color::Red;
-	while (x != root && x->parent_node->color == Color::Red)
+	while (x != root_node && x->parent_node->color == Color::Red)
 	{
 		// if x's parent is left node of x's grandparent
 		if( x->parent_node == x->parent_node->parent_node->left_node )

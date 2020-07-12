@@ -5,3 +5,4 @@ set(this DataStructure)
 project(${this})
 
 add_subdirectory(AVLTree)
+add_subdirectory(Graph)
