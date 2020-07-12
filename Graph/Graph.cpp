@@ -1,5 +1,9 @@
 #include <vector>
 #include <iostream>
+#include <stack>
+#include <queue>
+
+using namespace std;
 
 class Graph
 {
@@ -12,6 +16,14 @@ class Graph
         virtual void add_bi_edge(int source, int destinatino);
         virtual void print();
 
+        // Stack based implementation of DFS
+        virtual void DFSStack();
+        // Recursion based implementation of DFS
+        virtual void DFSRecursion();
+
+        // Queue based implementation of BFS
+        virtual void BFS();
+        virtual void BFSQueue(int index, vector<int>& visited);
     private:
         struct Edge
         {
@@ -30,7 +42,7 @@ class Graph
 
         int count;
 
-        std::vector<AdjList*> ListVector;
+        vector<AdjList*> ListVector;
 
         class EdgeComparator
         {
@@ -47,7 +59,7 @@ Graph::Edge::Edge(int src, int dst, int cst = 1)
 Graph::Graph(int cnt)
 {
     count = cnt;
-    ListVector = std::vector<AdjList*>(cnt);
+    ListVector = vector<AdjList*>(cnt);
     for(int i = 0; i < cnt; ++i)
     {
         ListVector[i] = new AdjList();
@@ -58,6 +70,7 @@ Graph::Graph(int cnt)
 void Graph::add_edge(int source, int destination, int cost)
 {
     Edge* edge = new Edge(source, destination, cost);
+    // all new edge is inserted at the beginning of AdjList
     edge->next = ListVector[source]->head;
     ListVector[source]->head = edge;
 }
@@ -86,13 +99,13 @@ void Graph::print()
         ad = ListVector[i]->head;
         if(ad != nullptr)
         {
-            std::cout << "Vertex: " << i << " is connected to: ";
+            cout << "Vertex: " << i << " is connected to: ";
             while (ad != nullptr)
             {
-                std::cout << ad->destination << " ";
+                cout << ad->destination << " ";
                 ad = ad->next;
             }
-            std::cout << std::endl;
+            cout << endl;
         }
     }
 }
@@ -104,6 +117,86 @@ bool Graph::EdgeComparator::operator()(Edge* x, Edge* y)
         return false;
     }
     return true;
+}
+
+void Graph::DFSStack()
+{
+    vector<int> visited(count);
+    for(int i = 0; i < count; ++i)
+        visited[i] = 0;
+
+    int curr;
+    stack<int> stk;
+
+    // push the starting node into stack.
+    visited[0] = 1;
+    stk.push(0);
+
+    while (!stk.empty())
+    {
+        curr = stk.top();
+        stk.pop();
+
+        Edge* head = ListVector[curr]->head;
+
+        // traverse an AdjList->Edge->Edge->Edge... linkedlist.
+        while (head != nullptr)
+        {
+            // push all unvisited child into queue
+            if(visited[head->destination] == 0)
+            {
+                visited[head->destination] = 1;
+                stk.push(head->destination);
+            }
+            head = head->next;
+        }
+    }
+}
+
+void Graph::BFS()
+{
+    vector<int> visited(count);
+    for(int i = 0; i < count; ++i)
+        visited[i] = 0;
+
+    for(int i = 0; i < count; ++i)
+    {
+        // if node has not been visited
+        if(visited[i] == 0)
+        {
+            BFSQueue(i, visited);
+        }
+    }
+}
+
+void Graph::BFSQueue(int index, vector<int>& visited)
+{
+    int curr;
+    queue<int> que;
+
+    visited[0] = 1;
+    // push first AdjList element within ListVector
+    que.push(index);
+
+    // traverse an AdjList->Edge->Edge->Edge... linkedlist.
+    while (!que.empty())
+    {
+        curr = que.front();
+        que.pop();
+        Edge* head = ListVector[curr]->head;
+        while (head != nullptr)
+        {
+            // push all unvisited child into queue
+            if(visited[head->destination] == 0)
+            {
+                visited[head->destination] = 1;
+                que.push(head->destination);
+            }
+            head = head->next;
+        }
+        
+    }
+    
 }
 
 int main()
