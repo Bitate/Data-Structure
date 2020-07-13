@@ -19,7 +19,7 @@ class Graph
         // Stack based implementation of DFS
         virtual void DFSStack();
         // Recursion based implementation of DFS
-        virtual void DFSRecursion();
+        // virtual void DFSRecursion();
 
         // Queue based implementation of BFS
         virtual void BFS();
@@ -121,9 +121,7 @@ bool Graph::EdgeComparator::operator()(Edge* x, Edge* y)
 
 void Graph::DFSStack()
 {
-    vector<int> visited(count);
-    for(int i = 0; i < count; ++i)
-        visited[i] = 0;
+    vector<int> visited(count, 0);
 
     int curr;
     stack<int> stk;
@@ -155,9 +153,7 @@ void Graph::DFSStack()
 
 void Graph::BFS()
 {
-    vector<int> visited(count);
-    for(int i = 0; i < count; ++i)
-        visited[i] = 0;
+    vector<int> visited(count, 0);
 
     for(int i = 0; i < count; ++i)
     {
