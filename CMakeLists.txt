@@ -4,6 +4,9 @@ set(this Data-Structure)
 
 project(${this})
 
+enable_testing()
+
+add_subdirectory(googletest)
 add_subdirectory(AVLTree)
 add_subdirectory(Graph)
 add_subdirectory(Sorting)

@@ -1,6 +1,12 @@
-//
-// Merge Sort Based on STL list
-//
+/**
+ * Merge sort based on STL list.
+ *
+ * We need to have two functions to perform a merge sort
+ * 1. Merge()
+ *      This function is to merge each subarray that has been sorted.
+ * 2. MergeSort()
+ *      This function is used to seperate the array into two sublists/subarraies
+ */
 
 #include <list>
 #include <functional>
@@ -9,6 +15,7 @@
 
 using namespace std;
 
+// comparison functor
 template<typename T>
 struct lessthan
 {
@@ -19,7 +26,8 @@ struct lessthan
 };
 
 template <typename E, typename C>
-void mergeSort(list<E>& S, C& less) {
+void mergeSort(list<E>& S, C& less) 
+{
     typedef typename list<E>::iterator Itor;		// sequence of elements
     int n = S.size();                               // S is the original Sequence, 
                                                     // not the result sequence S
@@ -35,7 +43,8 @@ void mergeSort(list<E>& S, C& less) {
 }
 
 template <typename E, typename C>			// merge utility
-void merge(list<E>& S1, list<E>& S2, list<E>& S, C& less) {
+void merge(list<E>& S1, list<E>& S2, list<E>& S, C& less) 
+{
     typedef typename list<E>::iterator Itor;		// sequence of elements
     Itor p1 = S1.begin();
     Itor p2 = S2.begin();
@@ -51,110 +60,15 @@ void merge(list<E>& S1, list<E>& S2, list<E>& S, C& less) {
         S.push_back(*p2++);
 }
 
-
-
-
-/**
- * Merge Sort
- *
- * We need to have two functions to perform a merge sort
- *
- * First: Merge()
- *      This function is used when each half part has been sorted.
- *
- * Second: MergeSort()
- *      This function is used to seperate the array into two sublists/subarraies
- */
-
-void Merge(
-    int arr[],
-    int startIndex,
-    int middleIndex,
-    int endIndex
-)
+int main()
 {
-    // Numbers of elements that will 
-    // be sorted from startIndex until
-    // endIndex.
-    int totalNumbers = endIndex - startIndex + 1;
+    lessthan<int> less_than;
+    list<int> list = { 12,5,1,5,2,5,9,5,39 };
+    mergeSort<int ,lessthan<int>>(list, less_than);
 
-    // Temporary array to store merged array.
-    int* tempArray = new int[totalNumbers];
-
-    // Index of left subarray
-    // array[startIndex ... middleIndex]
-    int leftIndex = startIndex;
-
-    // Index of right subarray
-    // array[middleIndex ... endIndex]
-    int rightIndex = middleIndex + 1;
-
-    // Index of merged array
-    int mergedIndex = 0;
-
-    // Merge two subarrays
-    while (leftIndex <= middleIndex && rightIndex <= endIndex)
-    {
-        if (arr[leftIndex] <= arr[rightIndex])
-        {
-            // Store the left subarray's element
-            // if it's less than the right one
-            tempArray[mergedIndex] = arr[leftIndex];
-
-            // Go to next left subarray index
-            ++leftIndex;
-        }
-        else
-        {
-            // Store the right subarray's element
-            // if it's less than the left one
-            tempArray[mergedIndex] = arr[rightIndex];
-
-            // Go to next right subarray index
-            ++rightIndex;
-        }
-
-        // Go to next merged array index
-        ++mergedIndex;
-    }
-    // If there are any remaining elements in left subarray
-        // that is not sorted into merged array yet
-    while (leftIndex <= middleIndex)
-    {
-        tempArray[mergedIndex] = arr[leftIndex];
-
-        // Go to next left subarray index
-        ++leftIndex;
-
-        // Go to next merged array index
-        ++mergedIndex;
-    }
-
-    // If there are any remaining elements in right subarray
-    // that is not sorted into merged array yet
-    while (rightIndex <= endIndex)
-    {
-        tempArray[mergedIndex] = arr[rightIndex];
-
-        // Go to next right subarray index
-        ++rightIndex;
-
-        // Go to next merged array index
-        ++mergedIndex;
-    }
-
-    // Now, the merged array has been sorted.
-    // Copy the elements to the original array
-    for (int i = 0; i < totalNumbers; ++i)
-    {
-        arr[startIndex + 1] = tempArray[i];
-    }
-
-    // Delete the temporary array "tempArray"
-    delete[] tempArray;
-
-    return;
+    for (int e : list)
+        cout << e << " ";
+    cout << endl;
 }
-
 
 
