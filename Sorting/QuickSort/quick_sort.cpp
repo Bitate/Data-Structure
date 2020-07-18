@@ -10,18 +10,17 @@ void quick_sort(vector<int>& data, int start, int end)
 	int left = start;
 	int right = end;
 
-	// only if left pointer <= right pointer,
+	// only if left pointer < right pointer,
 	// we perform swaps
-	while (left <= right)
+	while (left < right)
 	{
 		while (data[left] < pivot)
 			++left;
 		while (data[right] > pivot)
 			--right;
-		// if after above two loops,
-		// left still <= right,
-		// which means data[left] > pivot > data[right]
-		// we need to perform a swap.
+		// here we must use "<=" instead of "<"
+		// because, after ++left and --right, "right < left".
+		// This means we have finished comparison.
 		if (left <= right)
 		{
 			swap(data[left], data[right]);

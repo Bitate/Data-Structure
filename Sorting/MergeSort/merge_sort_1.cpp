@@ -12,16 +12,14 @@ using namespace std;
 template<typename T>
 struct lessthan
 {
-    // Don't omit const keyword, click below link for why
-    // https://stackoverflow.com/questions/19816139/expression-having-type-const-comparevptrs-would-lose-some-const-volatile-quali
-    bool operator()(T& v1, T& v2) const
+    bool operator()(T& v1, T& v2)
     {
         return v1 < v2;
     }
 };
 
 template <typename E, typename C>
-void mergeSort(list<E>& S, const C& less) {
+void mergeSort(list<E>& S, C& less) {
     typedef typename list<E>::iterator Itor;		// sequence of elements
     int n = S.size();                               // S is the original Sequence, 
                                                     // not the result sequence S
@@ -37,7 +35,7 @@ void mergeSort(list<E>& S, const C& less) {
 }
 
 template <typename E, typename C>			// merge utility
-void merge(list<E>& S1, list<E>& S2, list<E>& S, const C& less) {
+void merge(list<E>& S1, list<E>& S2, list<E>& S, C& less) {
     typedef typename list<E>::iterator Itor;		// sequence of elements
     Itor p1 = S1.begin();
     Itor p2 = S2.begin();
@@ -159,8 +157,4 @@ void Merge(
 }
 
 
-void MergeSort(
-    int arr[],
-    int startIndex,
-    int endIndex
-)
+
