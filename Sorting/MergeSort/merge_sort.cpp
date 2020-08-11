@@ -82,10 +82,10 @@ void mergeSort(int arr[], int startIndex, int endIndex)
 		// Find middle index
 		int middleIndex = (startIndex + endIndex) / 2;
 
-		// Sort left subarray arr[startIndex ... middleIndex]
+		// Sort left subarray:  [startIndex ... middleIndex]
 		mergeSort(arr, startIndex, middleIndex);
 
-		// Sort right subarray arr[middleIndex ... endIndex]
+		// Sort right subarray: (middleIndex ... endIndex]
 		mergeSort(arr, middleIndex+1, endIndex);
 
 		// Merge the left and the right subarray

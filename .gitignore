@@ -344,3 +344,5 @@ googletest/
 build/
 out/
 package/
+CMakeSettings.json
+settings.json
