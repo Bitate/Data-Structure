@@ -17,6 +17,7 @@ namespace bitate
 		{
 			queue_ptr = new data_type[1024];
 		}
+
 		queue(size_t size) : queue_ptr(new data_type[size])
 		{
 		}
