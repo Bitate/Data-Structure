@@ -1,1 +1,7 @@
-add_executable(queue_test queue_test.cpp)
+project(Queue CXX)
+
+# For header only library
+add_library(queue_detail INTERFACE)
+target_sources(queue_detail INTERFACE queue.hpp)
+
+add_subdirectory(tests)

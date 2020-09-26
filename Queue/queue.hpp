@@ -1,8 +1,11 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
 
-#include <vector>
-namespace bitate
+/**
+ * A queue is a FIFO data structure.
+ */
+
+namespace container
 {
 	template<typename data_type>
 	class queue
@@ -20,6 +23,11 @@ namespace bitate
 
 		queue(size_t size) : queue_ptr(new data_type[size])
 		{
+		}
+
+		~queue()
+		{
+			free(queue_ptr);
 		}
 
 		void push(const data_type& data)
